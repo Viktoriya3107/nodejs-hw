@@ -16,21 +16,24 @@ app.use(logger);
 app.use(cors());
 app.use(express.json());
 
-
 app.use(notesRoutes);
 
-
 app.use(notFoundHandler);
-
-
 app.use(errorHandler);
 
 const startServer = async () => {
-  await connectMongoDB();
+  try {
+    await connectMongoDB();
 
-  app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
-  });
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
 };
 
 startServer();

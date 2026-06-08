@@ -9,23 +9,20 @@ const isValidObjectId = (value, helpers) => {
   return value;
 };
 
-
 export const getAllNotesSchema = {
   query: Joi.object({
     page: Joi.number().integer().min(1).default(1),
     perPage: Joi.number().integer().min(5).max(20).default(10),
     tag: Joi.string().valid(...TAGS),
     search: Joi.string().allow(''),
-  }),
+  }).required(),
 };
-
 
 export const noteIdSchema = {
   params: Joi.object({
     noteId: Joi.string().custom(isValidObjectId).required(),
   }),
 };
-
 
 export const createNoteSchema = {
   body: Joi.object({
@@ -35,7 +32,6 @@ export const createNoteSchema = {
   }),
 };
 
-
 export const updateNoteSchema = {
   params: Joi.object({
     noteId: Joi.string().custom(isValidObjectId).required(),
@@ -44,5 +40,5 @@ export const updateNoteSchema = {
     title: Joi.string().min(1),
     content: Joi.string().allow(''),
     tag: Joi.string().valid(...TAGS),
-  }).min(1), 
+  }).min(1),
 };

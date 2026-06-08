@@ -1,6 +1,6 @@
-const { Note } = require('../models/note');
+import { Note } from '../models/note.js';
 
-const getAllNotes = async (req, res, next) => {
+export const getAllNotes = async (req, res, next) => {
   try {
     const { page = 1, perPage = 10, tag, search = '' } = req.query;
 
@@ -16,14 +16,15 @@ const getAllNotes = async (req, res, next) => {
 
     if (search) {
       query = query.or([
-        { title: new RegExp(search, 'i') },
-        { content: new RegExp(search, 'i') },
+        { title: { $regex: search, $options: 'i' } },
+        { content: { $regex: search, $options: 'i' } },
       ]);
     }
 
-    const totalNotes = await Note.countDocuments();
-
-    const notes = await query.skip(skip).limit(perPageNumber);
+    const [totalNotes, notes] = await Promise.all([
+      Note.countDocuments(query.getQuery()),
+      query.skip(skip).limit(perPageNumber),
+    ]);
 
     const totalPages = Math.ceil(totalNotes / perPageNumber);
 
@@ -38,5 +39,3 @@ const getAllNotes = async (req, res, next) => {
     next(error);
   }
 };
-
-module.exports = { getAllNotes };

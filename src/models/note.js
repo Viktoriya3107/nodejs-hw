@@ -18,10 +18,14 @@ const noteSchema = new mongoose.Schema(
       enum: TAGS,
       default: 'Todo',
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
   },
   { timestamps: true }
 );
-
 
 noteSchema.index({ tag: 1 });
 

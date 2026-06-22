@@ -127,9 +127,9 @@ export const requestResetEmail = async (req, res) => {
   );
 
   const html = handlebars.compile(template)({
-    name: user.email,
-    link: `${process.env.FRONTEND_DOMAIN}/reset-password?token=${token}`,
-  });
+  name: user.username,
+  link: `${process.env.FRONTEND_DOMAIN}/reset-password?token=${token}`,
+});
 
   try {
   await sendEmail({

@@ -19,10 +19,7 @@ dotenv.config();
 const app = express();
 
 
-
 app.use(logger);
-
-
 
 app.use(
   cors({
@@ -31,29 +28,22 @@ app.use(
   })
 );
 
-
-
 app.use(cookieParser());
 app.use(express.json());
 
 
-
-app.use('/auth', authRoutes);
-app.use('/api', notesRoutes);
-app.use('/users', userRoutes); // 👈 ДЛЯ АВАТАРА
-
-
-
-app.use(errors());
+app.use(authRoutes);
+app.use(notesRoutes);
+app.use(userRoutes);
 
 
 app.use(notFoundHandler);
 
 
+app.use(errors());
+
 
 app.use(errorHandler);
-
-
 
 const startServer = async () => {
   try {

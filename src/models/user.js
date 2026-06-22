@@ -17,19 +17,21 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 8,
     },
+    avatar: {
+      type: String,
+      default: 'https://www.gravatar.com/avatar/?d=identicon',
+    },
   },
   {
     timestamps: true,
   }
 );
 
-
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   return obj;
 };
-
 
 userSchema.pre('save', function (next) {
   if (!this.username) {
